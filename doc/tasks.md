@@ -24,6 +24,7 @@
   * [x] leaderboard should be `ol`
   * [x] remove avatars from html
   * [x] run WAVE tool
+  * [x] run lighthouse
 * [x] Check code formatting
 * [x] Validate html
 * [x] Fun
