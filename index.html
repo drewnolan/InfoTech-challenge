@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <title>Sales Team Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --DARK-BLOCK: #000000ff;
+      --BACKGROUND: #14213dff;
+      --HIGHLIGHT: #fca311ff;
+      --LIGHT-BLOCK: #e5e5e5ff;
+      --TEXT: #ffffffff;
+      --LINK: #219ebc;
+    }
+
+    body {
+      padding: 2rem;
+      background-color: var(--DARK-BLOCK);
+      color: var(--TEXT);
+    }
+
+    h1,
+    h2,
+    h3,
+    p[role="doc-subtitle"] {
+      text-align: center;
+      margin-bottom: 0.5em;
+    }
+
+    h2,
+    h3 {
+      color: var(--HIGHLIGHT);
+    }
+
+    span.full-name {
+      text-transform: capitalize;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+
+    a:link,
+    a:visited {
+      color: var(--LINK);
+    }
+
+    header {
+      grid-area: header;
+      width: 100%;
+    }
+
+    #leaderboard {
+      grid-area: left;
+    }
+
+    #leaderboard #timeframe-select-block {
+      padding: 0.5em;
+      background-color: var(--BACKGROUND);
+      border-radius: 0.5em;
+    }
+
+    #sales-team {
+      grid-area: main;
+    }
+
+    #sidebar {
+      grid-area: right;
+    }
+
+    footer {
+      grid-area: footer;
+    }
+
+    /* Avatars */
+
+    .avatar-abdullah-hadley {
+      background-image: url('https://randomuser.me/api/portraits/men/4.jpg');
+    }
+
+    .avatar-renee-sims {
+      background-image: url('https://randomuser.me/api/portraits/women/4.jpg');
+    }
+
+    .avatar-carys-metz {
+      background-image: url('https://randomuser.me/api/portraits/women/6.jpg');
+    }
+
+    .avatar-abdullah-hadley {
+      background-image: url('https://randomuser.me/api/portraits/men/4.jpg');
+    }
+
+    .avatar-abdullah-hadley {
+      background-image: url('https://randomuser.me/api/portraits/men/4.jpg');
+    }
+
+    .avatar-eduard-franz {
+      background-image: url("https://randomuser.me/api/portraits/men/6.jpg");
+    }
+
+    .avatar-alexis-doreau {
+      background-image: url("https://randomuser.me/api/portraits/men/7.jpg");
+    }
+
+    .avatar-mia-denys {
+      background-image: url("https://randomuser.me/api/portraits/women/8.jpg");
+    }
+
+    .avatar-lourdes-browning {
+      background-image: url("https://randomuser.me/api/portraits/women/10.jpg");
+    }
+
+    .avatar-zachary-albright {
+      background-image: url("https://randomuser.me/api/portraits/men/8.jpg");
+    }
+
+    .avatar-tim-schoch {
+      background-image: url("https://randomuser.me/api/portraits/men/9.jpg");
+    }
+
+    .avatar-oscar-thomsen {
+      background-image: url("https://randomuser.me/api/portraits/men/10.jpg");
+    }
+
+    .avatar-vivianna-kiser {
+      background-image: url("https://randomuser.me/api/portraits/women/11.jpg");
+    }
+
+    .avatar-elena-satine {
+      background-image: url("https://randomuser.me/api/portraits/women/12.jpg");
+    }
+
+    .avatar-elliot-nolten {
+      background-image: url("https://randomuser.me/api/portraits/men/12.jpg");
+    }
+
+    .avatar-daniela-dewitt {
+      background-image: url("https://randomuser.me/api/portraits/women/13.jpg");
+    }
+
+    .avatar-chloe-sirko {
+      background-image: url("https://randomuser.me/api/portraits/women/14.jpg");
+    }
+
+    .avatar-kaine-hudson {
+      background-image: url("https://randomuser.me/api/portraits/men/16.jpg");
+    }
+
+    .avatar-stephane-moreau {
+      background-image: url("https://randomuser.me/api/portraits/men/21.jpg");
+    }
+
+    .avatar-kelly-williams {
+      background-image: url("https://randomuser.me/api/portraits/men/29.jpg");
+    }
+
+    .avatar-miyah-myles {
+      background-image: url("https://randomuser.me/api/portraits/women/1.jpg");
+    }
+
+    .avatar-leo-gill {
+      background-image: url("https://randomuser.me/api/portraits/men/1.jpg");
+    }
+
+    .avatar-joseph-jones {
+      background-image: url("https://randomuser.me/api/portraits/men/2.jpg");
+    }
+
+    .avatar-sarah-cummings {
+      background-image: url("https://randomuser.me/api/portraits/women/3.jpg");
+    }
+
+    .avatar-wyatt-morris {
+      background-image: url("https://randomuser.me/api/portraits/men/3.jpg");
+    }
+
+    .bubble-avatar {
+      width: 80px;
+      min-width: 80px;
+      height: 100px;
+      min-height: 100px;
+      background-size: cover;
+      background-position: top center;
+      border-radius: 50%;
+    }
+
+    /* leaderboard numbered list style */
+
+    #leaderboard ol {
+      list-style: none;
+      counter-reset: leaders;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    #leaderboard li {
+      counter-increment: leaders;
+      margin-top: 0.5em;
+      padding: 0.5em;
+      background-color: var(--BACKGROUND);
+      border-radius: 0.5em;
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "avatar name name"
+        "avatar sales sales"
+        "avatar profile chat";
+      column-gap: 0.5em;
+      row-gap: 0.5em;
+    }
+
+    #leaderboard li .bubble-avatar::before {
+      content: '#'counter(leaders);
+      font-style: italic;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: x-large;
+      color: var(--HIGHLIGHT);
+      text-shadow:
+        -2px -2px 0 var(--DARK-BLOCK),
+        2px -2px 0 var(--DARK-BLOCK),
+        -2px 2px 0 var(--DARK-BLOCK),
+        2px 2px 0 var(--DARK-BLOCK);
+      position: absolute;
+    }
+
+    #leaderboard li .bubble-avatar {
+      grid-area: avatar;
+    }
+
+    #leaderboard li .full-name {
+      grid-area: name;
+    }
+
+    #leaderboard li .sales {
+      grid-area: sales;
+    }
+
+    #leaderboard li .profile-button {
+      grid-area: profile;
+    }
+
+    #leaderboard li .chat-button {
+      grid-area: chat;
+    }
+
+    /* Sales Team Members Table */
+
+    #sales-team table {
+      border-collapse: separate;
+      border-spacing: 0 0.5em;
+      margin-top: -0.5em;
+      width: 100%;
+    }
+
+    #sales-team th,
+    #sales-team td {
+      padding: 0.5em;
+      border: none;
+      border-right: 1px solid var(--LIGHT-BLOCK);
+      text-align: center;
+      background-color: var(--BACKGROUND);
+    }
+
+    #sales-team th:first-child,
+    #sales-team td:first-child {
+      padding: 0.5em;
+      border: none;
+      border-right: 1px solid var(--LIGHT-BLOCK);
+      text-align: center;
+      border-top-left-radius: 0.5em;
+      border-bottom-left-radius: 0.5em;
+      background-color: var(--BACKGROUND);
+    }
+
+    #sales-team th:last-child,
+    #sales-team td:last-child {
+      padding: 0.5em;
+      border: none;
+      text-align: center;
+      border-top-right-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
+      background-color: var(--BACKGROUND);
+    }
+
+    #sales-team td div.team-member {
+      display: flex;
+      align-items: center;
+    }
+
+    #sales-team td div.team-member span {
+      margin-left: 0.5em;
+    }
+
+    #sales-team .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #sales-team .actions span:first-child {
+      margin-right: 0.5em;
+    }
+
+    /* sidebar list style */
+
+    #sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    #overview ul {
+      display: flex;
+    }
+
+    #overview li {
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      background-color: var(--BACKGROUND);
+      border-radius: 0.5em;
+      margin-right: 0.5em;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    #overview li:last-child {
+      margin-right: 0;
+    }
+
+    #feed li.feed-item {
+      margin-top: 0.5em;
+      padding: 0.5em;
+      background-color: var(--BACKGROUND);
+      border-radius: 0.5em;
+      display: flex;
+      flex-direction: row-reverse;
+      height: 50px;
+      min-height: 50px;
+    }
+
+    #feed .full-name {
+      color: var(--HIGHLIGHT);
+    }
+
+    #feed .feed-text {
+      text-align: right;
+      align-self: center;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+
+    #feed .small-avatar {
+      border-radius: 50%;
+      width: 50px;
+      min-width: 50px;
+      background-size: cover;
+      background-position: top center;
+    }
+  </style>
+
+  <style media="screen and (max-width: 599px)">
+    nav {
+      display: block;
+    }
+
+    nav>ul>li {
+      width: 33%;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "header"
+        "left"
+        "main"
+        "right"
+        "footer";
+    }
+
+    #feed li.feed-item {
+      flex-direction: row;
+    }
+  </style>
+
+  <style media="screen and (min-width: 600px)">
+    nav li.hide-on-medium-width {
+      display: none;
+    }
+
+    nav a::before {
+      content: 'Jump to ';
+    }
+
+    #sidebar {
+      justify-items: right;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "header header"
+        "left right"
+        "main main"
+        "footer footer";
+      column-gap: 2rem;
+    }
+  </style>
+
+  <style media="screen and (min-width: 1023px)">
+    nav {
+      display: none;
+    }
+
+    #sidebar {
+      justify-items: right;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 25% 1fr 25%;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "header header header"
+        "left main right"
+        "footer footer footer";
+      column-gap: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content">
+    <main role="main">
+      <header>
+        <h1>Sales Team Dashboard</h1>
+        <nav>
+          <ul>
+            <li class="hide-on-medium-width"><a href="#leaderboard">Leaderboard</a></li>
+            <li><a href="#sales-team">Sales Team</a></li>
+            <li class="hide-on-medium-width"><a href="#sidebar">Overview</a></li>
+          </ul>
+        </nav>
+      </header>
+      <section id="leaderboard">
+        <h2>Leaderboard</h2>
+        <div id="timeframe-select-block">
+          <label for="timeframe-select">Time frame:
+            <select id="timeframe-select">
+              <option value="today" selected>Today</option>
+              <option value="thisWeek">This Week</option>
+              <option value="thisMonth">This Month</option>
+            </select></label>
+        </div>
+        <ol>
+          <li>
+            <div class="avatar-abdullah-hadley bubble-avatar top-seller"></div>
+            <span class="full-name" aria-label="Name">Abdullah Hadley</span>
+            <span class="sales" aria-label="Sales today"><strong>122</strong> closed deals</span>
+            <span class="profile-button"><a href="#">View Profile</a></span>
+            <span class="chat-button"><a href="#">Send Message</a></span>
+          </li>
+          <li>
+            <div class="avatar-renee-sims bubble-avatar"></div>
+            <span class="full-name" aria-label="Name">Renee Sims</span>
+            <span class="sales" aria-label="Sales today"><strong>102</strong> closed deals</span>
+            <span class="profile-button"><a href="#">View Profile</a></span>
+            <span class="chat-button"><a href="#">Send Message</a></span>
+          </li>
+          <li>
+            <div class="avatar-carys-metz bubble-avatar"></div>
+            <span class="full-name" aria-label="Name">Carys Metz</span>
+            <span class="sales" aria-label="Sales today"><strong>90</strong> closed deals</span>
+            <span class="profile-button"><a href="#">View Profile</a></span>
+            <span class="chat-button"><a href="#">Send Message</a></span>
+          </li>
+        </ol>
+      </section>
+      <section id="sales-team">
+        <h2>Sales team</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                Team Member
+              </th>
+              <th>
+                Sales
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-abdullah-hadley bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Abdullah Hadley</span>
+                </div>
+              </td>
+              <td>122 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-renee-sims bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Renee Sims</span>
+                </div>
+              </td>
+              <td>102 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-carys-metz bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Carys Metz</span>
+                </div>
+              </td>
+              <td>90 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-eduard-franz bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Eduard Franz</span>
+                </div>
+              </td>
+              <td>89 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-alexis-doreau bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Alexis Doreau</span>
+                </div>
+              </td>
+              <td>88 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-mia-denys bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Mia Denys</span>
+                </div>
+              </td>
+              <td>85 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-lourdes-browning bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Lourdes Browning</span>
+                </div>
+              </td>
+              <td>80 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-zachary-albright bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Zachary Albright</span>
+                </div>
+              </td>
+              <td>79 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-tim-schoch bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Tim Schoch</span>
+                </div>
+              </td>
+              <td>78 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-oscar-thomsen bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Oscar Thomsen</span>
+                </div>
+              </td>
+              <td>75 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-vivianna-kiser bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Vivianna Kiser</span>
+                </div>
+              </td>
+              <td>70 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-elena-satine bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Elena Satine</span>
+                </div>
+              </td>
+              <td>64 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-elliot-nolten bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Elliot Nolten</span>
+                </div>
+              </td>
+              <td>60 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-daniela-dewitt bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Daniela Dewitt</span>
+                </div>
+              </td>
+              <td>58 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-chloe-sirko bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Chloe Sirko</span>
+                </div>
+              </td>
+              <td>55 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-kaine-hudson bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Kaine Hudson</span>
+                </div>
+              </td>
+              <td>50 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-stephane-moreau bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Stephane Moreau</span>
+                </div>
+              </td>
+              <td>40 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="team-member">
+                  <div class="avatar-kelly-williams bubble-avatar"></div>
+                  <span class="full-name" aria-label="Name">Kelly Williams</span>
+                </div>
+              </td>
+              <td>35 closed deals</td>
+              <td>
+                <span class="actions">
+                  <span class="profile-button"><a href="#">View Profile</a></span>
+                  <span class="chat-button"><a href="#">Send Message</a></span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <div id="sidebar">
+        <section id="overview">
+          <h2>Overview</h2>
+            <ul>
+              <li>
+                <strong>345</strong> deals
+              </li>
+              <li>
+                Current Value <strong>$100,345</strong>
+              </li>
+            </ul>
+        </section>
+        <section id="feed">
+          <h2>Feed</h2>
+            <p role="doc-subtitle">
+              <strong>Remember: Always be closing</strong>
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </p>
+            <ul class="feed">
+              <li class="feed-item">
+                <div class="avatar-miyah-myles small-avatar"></div>
+                <span class="feed-text"><span class="full-name">Miyah Myles</span> Made a sale.</span>
+              </li>
+              <li class="feed-item">
+                <div class="avatar-leo-gill small-avatar"></div>
+                <span class="feed-text"><span class="full-name">leo gill</span> Made a sale.</span>
+              </li>
+              <li class="feed-item">
+                <div class="avatar-joseph-jones small-avatar"></div>
+                <span class="feed-text"><span class="full-name">Joseph Jones</span> Made a sale.</span>
+              </li>
+              <li class="feed-item">
+                <div class="avatar-miyah-myles small-avatar"></div>
+                <span class="feed-text"><span class="full-name">Miyah Myles</span> Made a sale.</span>
+              </li>
+              <li class="feed-item">
+                <div class="avatar-sarah-cummings small-avatar"></div>
+                <span class="feed-text"><span class="full-name">Sarah Cummings</span> Added a new lead.</span>
+              </li>
+              <li class="feed-item">
+                <div class="avatar-wyatt-morris small-avatar"></div>
+                <span class="feed-text"><span class="full-name">Wyatt Morris</span> Added a new lead.</span>
+              </li>
+            </ul>
+        </section>
+      </div>
+      <footer></footer>
+    </main>
+  </div>
+</body>
+
+</html>
