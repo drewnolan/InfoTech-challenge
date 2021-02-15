@@ -1,5 +1,9 @@
 # InfoTech-challenge
-I received this [challenge problem from InfoTech](original/Frontend%20Developer-Take%20Home%20Challenge%20(1).pdf)
+I received this [challenge problem from InfoTech](original/Frontend%20Developer-Take%20Home%20Challenge%20(1).pdf).
+
+It originally [looked like this](https://htmlpreview.github.io/?https://github.com/drewnolan/InfoTech-challenge/blob/main/original/index%20(6)%20(1).html).
+
+[I did this.](https://htmlpreview.github.io/?https://github.com/drewnolan/InfoTech-challenge/blob/main/index.html)
 
   * [Plan](#plan)
   * [Tasks](#tasks)
