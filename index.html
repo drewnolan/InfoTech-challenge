@@ -300,10 +300,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
     }
 
-    #sales-team .actions span:first-child {
-      margin-right: 0.5em;
+    #sales-team .actions span {
+      margin: 0.5em;
     }
 
     /* sidebar list style */
@@ -364,6 +365,10 @@
   </style>
 
   <style media="screen and (max-width: 599px)">
+    body {
+      padding: 0;
+    }
+
     nav {
       display: block;
     }
@@ -386,6 +391,10 @@
 
     #feed li.feed-item {
       flex-direction: row;
+    }
+
+    #feed .feed-text {
+      text-align: left;
     }
   </style>
 
